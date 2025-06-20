@@ -10,9 +10,12 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  # Defines the root path route ("/")
-  root "posts#index" #←ここがコメントになっているので、#を取る
+  # user関連
+  resources :users, only: %i[new create]
+  get "login", to: "user_sessions#new"
+  post "login", to: "user_sessions#create"
+  delete "logout", to: "user_sessions#destroy"
 
-  # recipetのrouteを追加 controllerのindex, new, show, edit, update, destroyを追加 
+  # recipet関連
   resources :recipets
 end
