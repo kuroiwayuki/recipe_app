@@ -12,4 +12,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "posts#index" #←ここがコメントになっているので、#を取る
+
+  # recipetのrouteを追加 controllerのindex, new, show, edit, update, destroyを追加 
+  resources :recipets
 end
