@@ -1,5 +1,5 @@
 class RecipetsController < ApplicationController
-  def index 
+  def index
     @recipets = Recipet.all
   end
 
@@ -18,7 +18,7 @@ class RecipetsController < ApplicationController
   def update
     @recipet = Recipet.find(params[:id])
     if @recipet.update(recipet_params)
-      redirect_to @recipet, notice: 'recipet was successfully updated.'
+      redirect_to @recipet, notice: "recipet was successfully updated."
     else
       render :edit
     end
@@ -27,7 +27,7 @@ class RecipetsController < ApplicationController
   def destroy
     @recipet = Recipet.find(params[:id])
     @recipet.destroy
-    redirect_to recipets_path, notice: 'recipet was successfully destroyed.'
+    redirect_to recipets_path, notice: "recipet was successfully destroyed."
   end
 
  private
