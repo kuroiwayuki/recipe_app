@@ -1,3 +1,28 @@
-# 簡素な一覧画面を作って
 <h1>レシート一覧</h1>
-<p>登録したレシート</p> 
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>ユーザー</th>
+      <th>購入日</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recipets.each do |recipet| %>
+      <tr>
+        <td><%= recipet.id %></td>
+        <td><%= recipet.user_id %></td>
+        <td><%= recipet.purchased_at %></td>
+        <td>
+          <%= link_to "表示", recipet_path(recipet) %> |
+          <%= link_to "編集", edit_recipet_path(recipet) %> |
+          <%= link_to "削除", recipet_path(recipet), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "新規作成", new_recipet_path %>

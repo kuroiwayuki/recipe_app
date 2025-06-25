@@ -1,0 +1,21 @@
+<%= form_with(model: recipet, local: true) do |f| %>
+  <% if recipet.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(recipet.errors.count, "件のエラー") %>が発生しました:</h2>
+      <ul>
+        <% recipet.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :purchased_at, "購入日" %><br>
+    <%= f.date_select :purchased_at %>
+  </div>
+
+  <div>
+    <%= f.submit"送信" %>
+  </div>
+<% end %>

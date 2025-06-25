@@ -1,1 +1,5 @@
-app/views/recipets/new.html.erb
+<h1>レシート新規作成</h1>
+
+<%= render "form", recipet: @recipet %>
+
+<%= link_to "一覧へ戻る", recipets_path %>

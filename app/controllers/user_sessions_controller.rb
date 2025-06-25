@@ -5,10 +5,9 @@ class UserSessionsController < ApplicationController
 
   def create
     @user = login(params[:email], params[:password])
-    binding.pry
 
     if @user
-      redirect_to root_path
+      redirect_to recipets_path, notice: "ログインしました"
     else
       render :new
     end

@@ -1,1 +1,7 @@
-app/views/recipets/show.html.erb
+<h1>レシート詳細</h1>
+
+<p><strong>ユーザー:</strong> <%= @recipet.user_id %></p>
+<p><strong>購入日:</strong> <%= @recipet.purchased_at %></p>
+
+<%= link_to "編集", edit_recipet_path(@recipet) %> |
+<%= link_to "戻る", recipets_path %>
