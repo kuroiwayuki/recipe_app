@@ -10,5 +10,7 @@ Rails.application.routes.draw do
   delete "logout", to: "user_sessions#destroy"
 
   # recipet関連
-  resources :recipets
+  resources :recipets do
+    get :add_item, on: :collection
+  end
 end

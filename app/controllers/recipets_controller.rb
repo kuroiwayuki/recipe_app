@@ -6,6 +6,24 @@ class RecipetsController < ApplicationController
     @recipets = current_user.recipets
   end
 
+  def add_item
+    item_name = params[:item_name]
+    @quantity = params[:quantity].to_i
+    @price = params[:price].to_i
+  
+    default_category = Category.find_or_create_by(name: "未分類")
+    @item = Item.find_or_create_by(name: item_name) do |item|
+      item.unit = "個"
+      item.category = default_category
+    end
+  
+    respond_to do |format|
+      format.turbo_stream # ← ここを明示的にする
+    end
+  end
+  
+  
+  
   def new
     @recipet = Recipet.new
   end

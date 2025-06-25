@@ -1,21 +1,40 @@
-<%= form_with(model: recipet, local: true) do |f| %>
-  <% if recipet.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(recipet.errors.count, "件のエラー") %>が発生しました:</h2>
-      <ul>
-        <% recipet.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<!-- 商品追加フォーム（Turbo Streamで追加） -->
+<%= form_with url: add_item_recipets_path, method: :get, data: { turbo_stream: true }, local: false do |f_item| %>
+  <div class="flex flex-wrap gap-4 items-end mb-4">
+    <div>
+      <%= f_item.label :item_name, "商品名" %>
+      <%= f_item.text_field :item_name, class: "border rounded p-2" %>
     </div>
-  <% end %>
 
-  <div>
-    <%= f.label :purchased_at, "購入日" %><br>
-    <%= f.date_select :purchased_at %>
+    <div>
+      <%= f_item.label :quantity, "数量" %>
+      <%= f_item.number_field :quantity, class: "border rounded p-2 w-20" %>
+    </div>
+
+    <div>
+      <%= f_item.label :price, "価格" %>
+      <%= f_item.number_field :price, class: "border rounded p-2 w-24" %>
+    </div>
+
+    <div>
+      <%= f_item.submit "＋ 追加", class: "bg-blue-600 text-white px-3 py-2 rounded" %>
+    </div>
+  </div>
+<% end %>
+
+<%= form_with model: @recipet, local: true do |f| %>
+  <div class="mb-4">
+    <%= f.label :purchased_at, "購入日" %>
+    <%= f.date_select :purchased_at, class: "border rounded p-2" %>
   </div>
 
-  <div>
-    <%= f.submit"送信" %>
+  <h3 class="font-semibold text-lg mb-2">購入商品</h3>
+  <!-- ✅ form 内部に置くことが重要 -->
+  <div id="added-items" class="space-y-2">
+    <!-- turbo_stream でここに hidden_field_tag が append される -->
+  </div>
+
+  <div class="mt-6">
+    <%= f.submit "レシートを保存する", class: "bg-green-600 text-white px-4 py-2 rounded" %>
   </div>
 <% end %>
