@@ -1,8 +1,6 @@
 <h2 class="text-xl font-bold mb-4">購入商品一覧</h2>
 
 <%= form_with model: @recipet, url: recipet_path(@recipet), method: :patch do |f| %>
-
-  <!-- ✅ 商品追加フィールド -->
   <div id="items" class="space-y-2">
     <% @recipet.recipet_items.each do |item| %>
       <%= render partial: "recipet_items/item", locals: { item: item, recipet: @recipet, f: f } %>
@@ -16,26 +14,10 @@
 
 <hr class="my-6">
 
-<!-- ✅ 新規商品追加フォーム（Turbo Frame） -->
-<%= turbo_frame_tag "new_item" do %>
-  <%= form_with url: add_item_from_edit_recipets_path(recipet_id: @recipet.id), method: :post, data: { turbo_stream: true } do |f_item| %>
-    <div class="flex flex-wrap gap-4 items-end">
-      <div class="flex-1 min-w-[120px]">
-        <%= f_item.label :item_name, "商品名", class: "block text-sm font-medium mb-1" %>
-        <%= f_item.text_field :item_name, class: "border rounded p-2 w-full" %>
-      </div>
-
-      <div class="min-w-[80px]">
-        <%= f_item.label :quantity, "数量", class: "block text-sm font-medium mb-1" %>
-        <%= f_item.number_field :quantity, class: "border rounded p-2 w-full" %>
-      </div>
-
-      <div>
-        <%= f_item.submit "＋ 追加", class: "bg-blue-600 text-white px-3 py-2 rounded" %>
-      </div>
-    </div>
-  <% end %>
-<% end %>
+<!-- フォーム送信後、空の入力フォーム -->
+<div class="mt-10" id="new_item_form_wrapper">
+  <%= render "recipets/new_item_form", recipet: @recipet %>
+</div>
 
 <!-- ✅ 戻るボタン -->
 <div class="fixed bottom-4 left-1/2 transform -translate-x-1/2">

@@ -112,7 +112,7 @@ class RecipetsController < ApplicationController
   def recipet_params
     params.require(:recipet).permit(
       :purchased_at,
-      recipet_items: [ :item_id, :quantity, :price ]
+      recipet_items: [ :item_id, :quantity]
     )
   end
 end
