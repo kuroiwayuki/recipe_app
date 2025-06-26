@@ -6,7 +6,7 @@ class RecipetsController < ApplicationController
     @recipets = current_user.recipets
   end
 
-  #newページからのアイテム追加
+  # newページからのアイテム追加
   def add_item
     item_name = params[:item_name]
     @quantity = params[:quantity].to_i
@@ -23,23 +23,23 @@ class RecipetsController < ApplicationController
     end
   end
 
-  #editページからの新規アイテム追加に関する処理
+  # editページからの新規アイテム追加に関する処理
   def add_item_from_edit
     @recipet = Recipet.find(params[:recipet_id])
     @item = Item.find_or_create_by(name: params[:item_name])
 
-    #カテゴリの付与のロジックは今後考えるので、一旦未分類に
-    #おそらくキーワード辞書でカテゴリを付与することになる
-    #ただし、未分類のカテゴリがない場合は作成する
+    # カテゴリの付与のロジックは今後考えるので、一旦未分類に
+    # おそらくキーワード辞書でカテゴリを付与することになる
+    # ただし、未分類のカテゴリがない場合は作成する
     if @item.new_record?
       @item.category ||= Category.find_or_create_by!(name: "未分類")
       @item.save!
     end
 
     @quantity = params[:quantity].to_i
-  
+
     @recipet_item = @recipet.recipet_items.build(item: @item, quantity: @quantity)
-  
+
     respond_to do |format|
       format.turbo_stream
     end
@@ -75,14 +75,14 @@ class RecipetsController < ApplicationController
 
   def update
     @recipet = Recipet.find(params[:id])
-    
-  
+
+
     # attribute_nestedを使用しないため、子モデル（recipet_items）の更新を手動で行う
     # 既存のrecipet_itemsを取得し、該当するitemは追加せず、含まれていないitemのみDBに追加
     existing_item = @recipet.recipet_items.pluck(:item_id).map(&:to_s)
     binding.pry
     params[:recipet][:recipet_items].each do |item_param|
-    # 判別の条件分岐箇所
+      # 判別の条件分岐箇所
       unless existing_item.include?(item_param[:item_id])
         @recipet.recipet_items.build(
           item_id: item_param[:item_id],
@@ -96,7 +96,7 @@ class RecipetsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-  
+
 
   def destroy
     @recipet.destroy
