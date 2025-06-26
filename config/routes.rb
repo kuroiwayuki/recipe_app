@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :recipet_items, only: [ :edit, :update, :destroy ]
     collection do
       get :add_item
+      post :add_item_from_edit
     end
   end
 end

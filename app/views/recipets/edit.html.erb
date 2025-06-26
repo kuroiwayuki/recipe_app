@@ -1,26 +1,43 @@
-<h3 class="text-lg font-bold mt-4">購入商品一覧</h3>
+<h2 class="text-xl font-bold mb-4">購入商品一覧</h2>
 
-<% @recipet.recipet_items.each do |item| %>
-  <%= turbo_frame_tag dom_id(item) do %>
-    <div class="flex items-center gap-4 py-2 border-b">
-      <div class="flex-1">
-        <strong><%= item.item.name %></strong>
-        <span class="text-sm text-gray-600">数量: <%= item.quantity %></span>
+<%= form_with model: @recipet, url: recipet_path(@recipet), method: :patch do |f| %>
+
+  <!-- ✅ 商品追加フィールド -->
+  <div id="items" class="space-y-2">
+    <% @recipet.recipet_items.each do |item| %>
+      <%= render partial: "recipet_items/item", locals: { item: item, recipet: @recipet, f: f } %>
+    <% end %>
+  </div>
+
+  <div class="mt-6">
+    <%= f.submit "更新", class: "bg-blue-600 text-white px-4 py-2 rounded" %>
+  </div>
+<% end %>
+
+<hr class="my-6">
+
+<!-- ✅ 新規商品追加フォーム（Turbo Frame） -->
+<%= turbo_frame_tag "new_item" do %>
+  <%= form_with url: add_item_from_edit_recipets_path(recipet_id: @recipet.id), method: :post, data: { turbo_stream: true } do |f_item| %>
+    <div class="flex flex-wrap gap-4 items-end">
+      <div class="flex-1 min-w-[120px]">
+        <%= f_item.label :item_name, "商品名", class: "block text-sm font-medium mb-1" %>
+        <%= f_item.text_field :item_name, class: "border rounded p-2 w-full" %>
       </div>
 
-      <%= link_to "編集", edit_recipet_recipet_item_path(@recipet, item),
-                  data: { turbo_frame: dom_id(item) },
-                  class: "text-blue-500 hover:underline" %>
+      <div class="min-w-[80px]">
+        <%= f_item.label :quantity, "数量", class: "block text-sm font-medium mb-1" %>
+        <%= f_item.number_field :quantity, class: "border rounded p-2 w-full" %>
+      </div>
 
-      <%= button_to "削除", recipet_recipet_item_path(@recipet, item),
-                  method: :delete,
-                  data: { turbo_confirm: "この商品を削除しますか？" },
-                  class: "text-red-500 hover:underline" %>
+      <div>
+        <%= f_item.submit "＋ 追加", class: "bg-blue-600 text-white px-3 py-2 rounded" %>
+      </div>
     </div>
   <% end %>
 <% end %>
 
-<!-- 👇 画面下部に固定される「戻る」リンク -->
+<!-- ✅ 戻るボタン -->
 <div class="fixed bottom-4 left-1/2 transform -translate-x-1/2">
   <%= link_to "戻る", recipets_path, class: "px-4 py-2 bg-gray-200 rounded shadow hover:bg-gray-300" %>
 </div>

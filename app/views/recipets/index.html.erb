@@ -14,12 +14,14 @@
       <% @recipets.each do |recipet| %>
         <tr class="border-t hover:bg-gray-50">
           <td class="px-4 py-2"><%= recipet.id %></td>
-          <td class="px-4 py-2"><%= recipet.user_id %></td>
+          <td class="px-4 py-2"><%= current_user.name %></td>
           <td class="px-4 py-2"><%= recipet.purchased_at&.strftime("%Y/%m/%d") %></td>
-          <td class="px-4 py-2 space-x-2">
+          <td class="px-4 py-2">
+            <div class="flex space-x-4">
             <%= link_to "表示", recipet_path(recipet), class: "text-blue-600 hover:underline" %>
             <%= link_to "編集", edit_recipet_path(recipet), class: "text-blue-600 hover:underline" %>
             <%= button_to "削除", recipet_path(recipet), method: :delete, form: { data: { turbo_confirm: "本当に削除しますか？" } }, class: "text-red-500 hover:underline" %>
+            </div>
           </td>
         </tr>
       <% end %>

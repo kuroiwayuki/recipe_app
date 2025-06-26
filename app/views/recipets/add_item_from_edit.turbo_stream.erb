@@ -1,0 +1,3 @@
+<%= turbo_stream.append "items" do %>
+  <%= render partial: "recipet_items/item", locals: { item: @recipet_item, recipet: @recipet } %>
+<% end %>

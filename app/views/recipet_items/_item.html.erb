@@ -1,0 +1,12 @@
+<%= turbo_frame_tag dom_id(item) do %>
+  <div class="flex items-center gap-4 py-2 border-b">
+    <div class="flex-1">
+      <strong><%= item.item.name %></strong>
+      <span class="text-sm text-gray-600">数量: <%= item.quantity %></span>
+    </div>
+
+    <!-- hiddenでデータを保持（form外でも送信される） -->
+    <%= hidden_field_tag "recipet[recipet_items][][item_id]", item.item.id %>
+    <%= hidden_field_tag "recipet[recipet_items][][quantity]", item.quantity %>
+  </div>
+<% end %>
