@@ -1,7 +1,23 @@
-<h1>レシート詳細</h1>
+<h3 class="text-lg font-bold mt-4">購入商品一覧</h3>
 
-<p><strong>ユーザー:</strong> <%= @recipet.user_id %></p>
-<p><strong>購入日:</strong> <%= @recipet.purchased_at %></p>
+<% @recipet.recipet_items.each do |item| %>
+  <%= turbo_frame_tag dom_id(item) do %>
+    <div class="flex items-center gap-4 py-2 border-b">
+      <div class="flex-1">
+        <strong><%= item.item.name %></strong>
+        <span class="text-sm text-gray-600 ml-2">数量: <%= item.quantity %></span>
+      </div>
 
-<%= link_to "編集", edit_recipet_path(@recipet) %> |
-<%= link_to "戻る", recipets_path %>
+      <!-- 削除ボタンのみ表示（編集機能が不要な場合） -->
+      <%= button_to "削除", recipet_recipet_item_path(@recipet, item),
+                    method: :delete,
+                    data: { turbo_confirm: "この商品を削除しますか？" },
+                    class: "text-red-500 hover:underline" %>
+    </div>
+  <% end %>
+<% end %>
+
+<!-- 👇 画面下部に固定される「戻る」リンク -->
+<div class="fixed bottom-4 left-1/2 transform -translate-x-1/2">
+  <%= link_to "戻る", recipets_path, class: "px-4 py-2 bg-gray-200 rounded shadow hover:bg-gray-300" %>
+</div>

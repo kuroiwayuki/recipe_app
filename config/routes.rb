@@ -11,6 +11,10 @@ Rails.application.routes.draw do
 
   # recipet関連
   resources :recipets do
-    get :add_item, on: :collection
+    resources :recipet_items, only: [:edit, :update, :destroy]
+    collection do
+      get :add_item
+    end
   end
+  
 end

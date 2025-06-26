@@ -1,0 +1,20 @@
+<%= turbo_frame_tag dom_id(@recipet_item) do %>
+  <%= form_with model: [@recipet_item.recipet, @recipet_item], data: { turbo_frame: dom_id(@recipet_item) } do |f| %>
+    <div class="flex items-center gap-4 py-2 border-b">
+      <!-- 商品名（表示のみ） -->
+      <div class="flex-1">
+        <strong><%= @recipet_item.item.name %></strong>
+      </div>
+
+      <!-- 数量（編集可能） -->
+      <div>
+        <%= f.number_field :quantity, class: "w-20 border rounded", value: @recipet_item.quantity %>
+      </div>
+
+      <!-- 保存ボタン -->
+      <div>
+        <%= f.submit "保存", class: "text-green-600 hover:underline" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

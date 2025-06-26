@@ -18,19 +18,17 @@ class RecipetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.turbo_stream # ← ここを明示的にする
+      format.turbo_stream 
     end
   end
-
-
 
   def new
     @recipet = Recipet.new
   end
 
   def create
-    @recipet = current_user.recipets.build(recipet_params)
-    recipet_items_data = recipet_items_raw
+    @recipet = current_user.recipets.build(recipet_params.except(:recipet_items))
+    recipet_items_data = recipet_params[:recipet_items]
 
     if @recipet.save
       recipet_items_data.each do |item_data|
@@ -48,7 +46,9 @@ class RecipetsController < ApplicationController
 
   def show;end
 
-  def edit;end
+  def edit
+    @recipet = current_user.recipets.find(params[:id])
+  end
 
   def update
     if @recipet.update(recipet_params)
@@ -70,11 +70,9 @@ class RecipetsController < ApplicationController
   end
 
   def recipet_params
-    params.require(:recipet).permit(:purchased_at)
-  end
-
-  # 子modelのrecipet_itemsをparamsから取得するためのメソッド
-  def recipet_items_raw
-    params[:recipet][:recipet_items].values
+    params.require(:recipet).permit(
+      :purchased_at,
+      recipet_items: [:item_id, :quantity, :price]
+    )
   end
 end
