@@ -1,40 +1,44 @@
-<!-- 商品追加フォーム（Turbo Streamで追加） -->
-<%= form_with url: add_item_recipets_path, method: :get, data: { turbo_stream: true }, local: false do |f_item| %>
-  <div class="flex flex-wrap gap-4 items-end mb-4">
-    <div>
-      <%= f_item.label :item_name, "商品名" %>
-      <%= f_item.text_field :item_name, class: "border rounded p-2" %>
+<div class="max-w-2xl mx-auto p-4 bg-white rounded shadow space-y-6">
+  <!-- 🔵 商品追加フォーム -->
+  <%= form_with url: add_item_recipets_path, method: :get, data: { turbo_stream: true }, local: false do |f_item| %>
+    <div class="flex flex-wrap gap-4 items-end">
+      <div class="flex-1 min-w-[120px]">
+        <%= f_item.label :item_name, "商品名", class: "block text-sm font-medium mb-1" %>
+        <%= f_item.text_field :item_name, class: "border rounded p-2 w-full" %>
+      </div>
+
+      <div class="min-w-[80px]">
+        <%= f_item.label :quantity, "数量", class: "block text-sm font-medium mb-1" %>
+        <%= f_item.number_field :quantity, class: "border rounded p-2 w-full" %>
+      </div>
+
+      <div class="min-w-[100px]">
+        <%= f_item.label :price, "価格", class: "block text-sm font-medium mb-1" %>
+        <%= f_item.number_field :price, class: "border rounded p-2 w-full" %>
+      </div>
+
+      <div>
+        <%= f_item.submit "＋ 追加", class: "bg-blue-600 text-white px-3 py-2 rounded" %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- 🟢 レシート全体保存フォーム -->
+  <%= form_with model: @recipet, local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :purchased_at, "購入日", class: "block text-sm font-medium mb-1" %>
+      <%= f.date_select :purchased_at, class: "border rounded p-2" %>
     </div>
 
-    <div>
-      <%= f_item.label :quantity, "数量" %>
-      <%= f_item.number_field :quantity, class: "border rounded p-2 w-20" %>
+    <h3 class="font-semibold text-lg mb-2">購入商品一覧</h3>
+
+    <!-- 🔽 Turbo Streamで追加される商品リスト -->
+    <div id="added-items" class="space-y-2">
+      <!-- appendされた hidden_field_tag + 表示テキストがここに並ぶ -->
     </div>
 
-    <div>
-      <%= f_item.label :price, "価格" %>
-      <%= f_item.number_field :price, class: "border rounded p-2 w-24" %>
+    <div class="mt-6">
+      <%= f.submit "レシートを保存する", class: "bg-green-600 text-white px-4 py-2 rounded" %>
     </div>
-
-    <div>
-      <%= f_item.submit "＋ 追加", class: "bg-blue-600 text-white px-3 py-2 rounded" %>
-    </div>
-  </div>
-<% end %>
-
-<%= form_with model: @recipet, local: true do |f| %>
-  <div class="mb-4">
-    <%= f.label :purchased_at, "購入日" %>
-    <%= f.date_select :purchased_at, class: "border rounded p-2" %>
-  </div>
-
-  <h3 class="font-semibold text-lg mb-2">購入商品</h3>
-  <!-- ✅ form 内部に置くことが重要 -->
-  <div id="added-items" class="space-y-2">
-    <!-- turbo_stream でここに hidden_field_tag が append される -->
-  </div>
-
-  <div class="mt-6">
-    <%= f.submit "レシートを保存する", class: "bg-green-600 text-white px-4 py-2 rounded" %>
-  </div>
-<% end %>
+  <% end %>
+</div>
