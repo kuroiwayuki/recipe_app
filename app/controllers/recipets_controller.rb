@@ -18,7 +18,7 @@ class RecipetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.turbo_stream 
+      format.turbo_stream
     end
   end
 
@@ -72,7 +72,7 @@ class RecipetsController < ApplicationController
   def recipet_params
     params.require(:recipet).permit(
       :purchased_at,
-      recipet_items: [:item_id, :quantity, :price]
+      recipet_items: [ :item_id, :quantity, :price ]
     )
   end
 end

@@ -6,7 +6,7 @@ class RecipetItemsController < ApplicationController
 
   def update
     if @recipet_item.update(recipet_item_params)
-      redirect_to edit_recipet_path(@recipet_item.recipet), notice: '商品情報を更新しました'
+      redirect_to edit_recipet_path(@recipet_item.recipet), notice: "商品情報を更新しました"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -15,9 +15,9 @@ class RecipetItemsController < ApplicationController
   def destroy
     @recipet_item = RecipetItem.find(params[:id])
     @recipet_item.destroy
-  
+
     respond_to do |format|
-      format.turbo_stream 
+      format.turbo_stream
       format.html { redirect_to edit_recipet_path(@recipet_item.recipet), notice: "削除しました" }
     end
   end
