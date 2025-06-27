@@ -7,93 +7,108 @@ class RecipetsController < ApplicationController
   end
 
   # newページからのアイテム追加
-  def add_item
-    item_name = params[:item_name]
-    @quantity = params[:quantity].to_i
-    @price = params[:price].to_i
+  # def add_item
+  #   item_name = params[:item_name]
+  #   @quantity = params[:quantity].to_i
+  #   @price = params[:price].to_i
 
-    default_category = Category.find_or_create_by(name: "未分類")
-    @item = Item.find_or_create_by(name: item_name) do |item|
-      item.unit = "個"
-      item.category = default_category
-    end
+  #   default_category = Category.find_or_create_by(name: "未分類")
+  #   @item = Item.find_or_create_by(name: item_name) do |item|
+  #     item.unit = "個"
+  #     item.category = default_category
+  #   end
 
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
+  #   respond_to do |format|
+  #     format.turbo_stream
+  #   end
+  # end
 
   # editページからの新規アイテム追加に関する処理
-  def add_item_from_edit
-    @recipet = Recipet.find(params[:recipet_id])
-    @item = Item.find_or_create_by(name: params[:item_name])
+  # def add_item_from_edit
+  #   @recipet = Recipet.find(params[:recipet_id])
+  #   @item = Item.find_or_create_by(name: params[:item_name])
 
-    # カテゴリの付与のロジックは今後考えるので、一旦未分類に
-    # おそらくキーワード辞書でカテゴリを付与することになる
-    # ただし、未分類のカテゴリがない場合は作成する
-    if @item.new_record?
-      @item.category ||= Category.find_or_create_by!(name: "未分類")
-      @item.save!
-    end
+  #   # カテゴリの付与のロジックは今後考えるので、一旦未分類に
+  #   # おそらくキーワード辞書でカテゴリを付与することになる
+  #   # ただし、未分類のカテゴリがない場合は作成する
+  #   if @item.new_record?
+  #     @item.category ||= Category.find_or_create_by!(name: "未分類")
+  #     @item.save!
+  #   end
 
-    @quantity = params[:quantity].to_i
+  #   @quantity = params[:quantity].to_i
 
-    @recipet_item = @recipet.recipet_items.build(item: @item, quantity: @quantity)
+  #   @recipet_item = @recipet.recipet_items.build(item: @item, quantity: @quantity)
 
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
+  #   respond_to do |format|
+  #     format.turbo_stream
+  #   end
+  # end
 
   def new
     @recipet = Recipet.new
+    ri = @recipet.recipet_items.build
+    item = ri.build_item
+    item.build_category
   end
+  
 
   def create
-    @recipet = current_user.recipets.build(recipet_params.except(:recipet_items))
-    recipet_items_data = recipet_params[:recipet_items]
-
-    if @recipet.save
-      recipet_items_data.each do |item_data|
-        @recipet.recipet_items.create(
-          item_id: item_data[:item_id],
-          quantity: item_data[:quantity]
-        )
+    @recipet = current_user.recipets.build(recipet_params)
+  
+    @recipet.recipet_items.each do |recipet_item|
+      item_name = recipet_item.item.name
+      category_name = recipet_item.item.category.name
+  
+      # 既存のカテゴリを再利用 or 新規作成
+      category = Category.find_or_create_by(name: category_name)
+  
+      # 既存のアイテムを再利用 or 新規作成（カテゴリも紐付け）
+      item = Item.find_or_create_by(name: item_name) do |new_item|
+        new_item.category = category
       end
-
-      redirect_to @recipet, notice: "レシートを登録しました"
+  
+      # recipet_item に新しいアイテムを関連付け
+      recipet_item.item = item
+    end
+    binding.pry
+  
+    if @recipet.save
+      redirect_to @recipet, notice: "レシート内容を登録しました"
     else
       render :new, status: :unprocessable_entity
     end
   end
+  
 
   def show;end
 
   def edit
-    @recipet = current_user.recipets.find(params[:id])
+    @recipet = Recipet.find(params[:id])
   end
 
   def update
     @recipet = Recipet.find(params[:id])
-
-
-    # attribute_nestedを使用しないため、子モデル（recipet_items）の更新を手動で行う
-    # 既存のrecipet_itemsを取得し、該当するitemは追加せず、含まれていないitemのみDBに追加
-    existing_item = @recipet.recipet_items.pluck(:item_id).map(&:to_s)
     binding.pry
-    params[:recipet][:recipet_items].each do |item_param|
-      # 判別の条件分岐箇所
-      unless existing_item.include?(item_param[:item_id])
-        @recipet.recipet_items.build(
-          item_id: item_param[:item_id],
-          quantity: item_param[:quantity]
-        )
+    @recipet.assign_attributes(recipet_params)
+  
+    @recipet.recipet_items.each do |recipet_item|
+      item_name = recipet_item.item.name
+      category_name = recipet_item.item.category.name
+  
+      category = Category.find_or_create_by(name: category_name)
+  
+      item = Item.find_or_create_by(name: item_name) do |new_item|
+        new_item.category = category
       end
+  
+      recipet_item.item = item
     end
+  
     if @recipet.save
-      redirect_to @recipet, notice: "レシート内容を更新しました"
+      redirect_to @recipet, notice: "レシートを更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
@@ -112,7 +127,16 @@ class RecipetsController < ApplicationController
   def recipet_params
     params.require(:recipet).permit(
       :purchased_at,
-      recipet_items: [ :item_id, :quantity]
+      recipet_items_attributes: [
+        :id,
+        :quantity,
+        :_destroy,
+        item_attributes: [
+          :id,
+          :name,
+          category_attributes: [:id, :name]
+        ]
+      ]
     )
   end
 end
