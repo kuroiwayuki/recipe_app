@@ -8,10 +8,12 @@
 
     <div id="recipet_items" data-recipet-items-target="container" class="space-y-6">
       <% recipet.recipet_items.each_with_index do |ri, i| %>
-        <%= render "recipet_item_fields", f: f, ri: ri, index: i %>
+        <%= f.fields_for :recipet_items, ri, child_index: i do |ri_fields| %> 
+          <%= render "recipet_item_fields", f: ri_fields %>
+        <% end %>
       <% end %>
     </div>
-    <%# 追加ボタンのクリックでstimulusのaddアクションが走る%>
+
     <div>
       <button type="button" data-action="recipet-items#add" class="bg-green-600 text-white px-4 py-2 rounded">
         ＋ 次の商品を追加
@@ -27,5 +29,6 @@
         <%= render "recipet_item_fields", f: ri_fields %>
       <% end %>
     </template>
+
   </div>
 <% end %>

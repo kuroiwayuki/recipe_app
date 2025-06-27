@@ -55,22 +55,6 @@ class RecipetsController < ApplicationController
 
   def create
     @recipet = current_user.recipets.build(recipet_params)
-  
-    @recipet.recipet_items.each do |recipet_item|
-      item_name = recipet_item.item.name
-      category_name = recipet_item.item.category.name
-  
-      # 既存のカテゴリを再利用 or 新規作成
-      category = Category.find_or_create_by(name: category_name)
-  
-      # 既存のアイテムを再利用 or 新規作成（カテゴリも紐付け）
-      item = Item.find_or_create_by(name: item_name) do |new_item|
-        new_item.category = category
-      end
-  
-      # recipet_item に新しいアイテムを関連付け
-      recipet_item.item = item
-    end
     binding.pry
   
     if @recipet.save
@@ -91,20 +75,6 @@ class RecipetsController < ApplicationController
     @recipet = Recipet.find(params[:id])
     binding.pry
     @recipet.assign_attributes(recipet_params)
-  
-    @recipet.recipet_items.each do |recipet_item|
-      item_name = recipet_item.item.name
-      category_name = recipet_item.item.category.name
-  
-      category = Category.find_or_create_by(name: category_name)
-  
-      item = Item.find_or_create_by(name: item_name) do |new_item|
-        new_item.category = category
-      end
-  
-      recipet_item.item = item
-    end
-  
     if @recipet.save
       redirect_to @recipet, notice: "レシートを更新しました"
     else

@@ -1,23 +1,33 @@
-<h3 class="text-lg font-bold mt-4">購入商品一覧</h3>
+<div class="max-w-3xl mx-auto p-6 bg-white rounded shadow space-y-6">
 
-<% @recipet.recipet_items.each do |item| %>
-  <%= turbo_frame_tag dom_id(item) do %>
-    <div class="flex items-center gap-4 py-2 border-b">
-      <div class="flex-1">
-        <strong><%= item.item.name %></strong>
-        <span class="text-sm text-gray-600 ml-2">数量: <%= item.quantity %></span>
-      </div>
+  <div>
+    <h2 class="text-xl font-bold mb-2">レシート詳細</h2>
+    <p class="text-gray-700">
+      購入日: <strong><%= l(@recipet.purchased_at) %></strong>
+    </p>
+  </div>
 
-      <!-- 削除ボタンのみ表示（編集機能が不要な場合） -->
-      <%= button_to "削除", recipet_recipet_item_path(@recipet, item),
-                    method: :delete,
-                    data: { turbo_confirm: "この商品を削除しますか？" },
-                    class: "text-red-500 hover:underline" %>
-    </div>
-  <% end %>
-<% end %>
+  <div>
+    <h3 class="text-lg font-semibold mb-3">購入商品一覧</h3>
+    <ul class="space-y-4 list-disc list-inside">
+      <% @recipet.recipet_items.each do |item| %>
+        <li class="ml-4">
+          <div>
+            <span class="font-semibold"><%= item.item.name %></span>
+            （カテゴリ: <%= item.item.category.name %>、数量: <%= item.quantity %>）
+            <%= button_to "削除", recipet_recipet_item_path(@recipet, item),
+                          method: :delete,
+                          data: { turbo_confirm: "この商品を削除しますか？" },
+                          class: "text-red-500 hover:underline ml-4" %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 
-<!-- 👇 画面下部に固定される「戻る」リンク -->
-<div class="fixed bottom-4 left-1/2 transform -translate-x-1/2">
-  <%= link_to "戻る", recipets_path, class: "px-4 py-2 bg-gray-200 rounded shadow hover:bg-gray-300" %>
+  <div class="text-center mt-8">
+    <%= link_to "一覧に戻る", recipets_path,
+      class: "inline-block px-6 py-2 bg-gray-200 rounded shadow hover:bg-gray-300" %>
+  </div>
+
 </div>

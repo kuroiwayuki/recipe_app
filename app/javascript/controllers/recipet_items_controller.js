@@ -5,7 +5,7 @@ export default class extends Controller {
   index = 0
 
   connect() {
-    console.log("RecipetItemsController connected💩")
+    console.log("RecipetItemsControllerは開けてるよ💩")
     this.index = this.containerTarget.children.length
   }
 
