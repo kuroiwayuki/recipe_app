@@ -5,12 +5,16 @@ export default class extends Controller {
   index = 0
 
   connect() {
-    // ページ初期表示時に1行追加しておく（任意）
-    this.add()
+    console.log("RecipetItemsController connected💩")
+    this.index = this.containerTarget.children.length
   }
 
   add() {
-    const content = this.templateTarget.innerHTML.replace(/__INDEX__/g, this.index++)
-    this.containerTarget.insertAdjacentHTML("beforeend", content)
+    console.log("addしろカス💩")
+    const template = this.templateTarget.innerHTML
+    const html = template.replace(/NEW_RECORD/g, this.index)
+    console.log(this.containerTarget)
+    this.containerTarget.insertAdjacentHTML("afterbegin", html)
+    this.index++
   }
 }

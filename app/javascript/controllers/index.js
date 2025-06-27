@@ -2,7 +2,13 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-// import { application } from "./application"
+import { application } from "./application"
 
-// import HelloController from "./hello_controller"
-// application.register("hello", HelloController)
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
+
+import NestedFormController from "./nested_form_controller"
+application.register("nested-form", NestedFormController)
+
+import RecipetItemsController from "./recipet_items_controller"
+application.register("recipet-items", RecipetItemsController)

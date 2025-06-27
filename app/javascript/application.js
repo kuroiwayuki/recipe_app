@@ -1,13 +1,13 @@
 import "@hotwired/turbo-rails"
-console.log("✅ Turbo loaded")
-
 import { Application } from "@hotwired/stimulus"
-console.log("✅ Stimulus imported")
+import RecipetItemsController from "./controllers/recipet_items_controller" // ✅ ファイル名と一致
 
-import HelloController from "./controllers/hello_controller"
+console.log("Hello Stimulus ✅")
 
 const application = Application.start()
-application.register("hello", HelloController)
-
 window.Stimulus = application
-console.log("✅ Stimulus started")
+
+application.register("recipet-items", RecipetItemsController) // ✅ コントローラ名に合わせて登録
+
+console.log("Stimulus controllers:", window.Stimulus.controllers)
+console.log("Stimulus modules:", window.Stimulus.router.modulesByIdentifier)
