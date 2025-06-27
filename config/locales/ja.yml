@@ -1,0 +1,4 @@
+ja:
+  time:
+    formats:
+      receipt: "%-m月%-d日"
