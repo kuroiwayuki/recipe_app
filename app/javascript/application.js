@@ -1,3 +1,13 @@
-// Entry point for the build script in your package.json
 import "@hotwired/turbo-rails"
-import "./controllers"
+console.log("✅ Turbo loaded")
+
+import { Application } from "@hotwired/stimulus"
+console.log("✅ Stimulus imported")
+
+import HelloController from "./controllers/hello_controller"
+
+const application = Application.start()
+application.register("hello", HelloController)
+
+window.Stimulus = application
+console.log("✅ Stimulus started")
