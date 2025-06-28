@@ -6,45 +6,6 @@ class RecipetsController < ApplicationController
     @recipets = current_user.recipets
   end
 
-  # newページからのアイテム追加
-  # def add_item
-  #   item_name = params[:item_name]
-  #   @quantity = params[:quantity].to_i
-  #   @price = params[:price].to_i
-
-  #   default_category = Category.find_or_create_by(name: "未分類")
-  #   @item = Item.find_or_create_by(name: item_name) do |item|
-  #     item.unit = "個"
-  #     item.category = default_category
-  #   end
-
-  #   respond_to do |format|
-  #     format.turbo_stream
-  #   end
-  # end
-
-  # editページからの新規アイテム追加に関する処理
-  # def add_item_from_edit
-  #   @recipet = Recipet.find(params[:recipet_id])
-  #   @item = Item.find_or_create_by(name: params[:item_name])
-
-  #   # カテゴリの付与のロジックは今後考えるので、一旦未分類に
-  #   # おそらくキーワード辞書でカテゴリを付与することになる
-  #   # ただし、未分類のカテゴリがない場合は作成する
-  #   if @item.new_record?
-  #     @item.category ||= Category.find_or_create_by!(name: "未分類")
-  #     @item.save!
-  #   end
-
-  #   @quantity = params[:quantity].to_i
-
-  #   @recipet_item = @recipet.recipet_items.build(item: @item, quantity: @quantity)
-
-  #   respond_to do |format|
-  #     format.turbo_stream
-  #   end
-  # end
-
   def new
     @recipet = Recipet.new
     ri = @recipet.recipet_items.build
