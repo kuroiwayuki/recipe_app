@@ -15,11 +15,11 @@
     <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <!-- ✅ 修正後（:skip_pipeline を一番最後に） -->
     <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
   </head>
 
   <body>
+    <%= turbo_frame_tag 'category_modal' %>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>

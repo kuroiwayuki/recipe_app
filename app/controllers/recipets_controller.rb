@@ -8,16 +8,13 @@ class RecipetsController < ApplicationController
 
   def new
     @recipet = Recipet.new
-    recipet_item = @recipet.recipet_items.build
-    item = recipet_item.build_item
-    category = item.build_category
+    @recipet.recipet_items.build.build_item
   end
 
 
   def create
     @recipet = current_user.recipets.build(recipet_params)
     binding.pry
-
     if @recipet.save
       redirect_to @recipet, notice: "レシート内容を登録しました"
     else
@@ -65,7 +62,7 @@ class RecipetsController < ApplicationController
         item_attributes: [
           :id,
           :name,
-          category_attributes: [ :id, :name ]
+          :category_id # ここだけでOK
         ]
       ]
     )

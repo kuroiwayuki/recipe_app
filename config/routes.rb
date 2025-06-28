@@ -18,4 +18,6 @@ Rails.application.routes.draw do
       post :add_item_from_edit
     end
   end
+
+  resources :categories
 end
