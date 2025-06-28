@@ -14,7 +14,14 @@ export default class extends Controller {
     const template = this.templateTarget.innerHTML
     const html = template.replace(/NEW_RECORD/g, this.index)
     console.log(this.containerTarget)
-    this.containerTarget.insertAdjacentHTML("afterbegin", html)
+    this.containerTarget.insertAdjacentHTML("beforeend", html)
     this.index++
+  }
+  remove(event) {
+    event.preventDefault()
+    const item = event.target.closest(".recipet-item")
+    console.log(item,"確認")
+    item.querySelector("input[name*='_destroy']").value = "1"
+    item.style.display = "none"
   }
 }

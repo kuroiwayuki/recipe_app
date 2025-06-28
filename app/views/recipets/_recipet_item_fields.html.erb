@@ -1,20 +1,30 @@
-<div class="border border-gray-300 rounded-lg p-4 bg-gray-50">
+<div class="recipet-item border p-4 rounded bg-gray-50 mb-4">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <div>
       <%= f.fields_for :item do |item_fields| %>
-        <%= item_fields.label :name, "商品名", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= item_fields.label :name, "商品名" %>
         <%= item_fields.text_field :name, class: "w-full border-gray-300 rounded px-3 py-2" %>
 
-        <%= item_fields.fields_for :category do |cat_fields| %>
-          <%= cat_fields.label :name, "カテゴリ名", class: "block text-sm font-medium text-gray-700 mt-4 mb-1" %>
-          <%= cat_fields.text_field :name, class: "w-full border-gray-300 rounded px-3 py-2" %>
+        <%= item_fields.fields_for :category do |category_fields| %>
+          <%= category_fields.label :name, "カテゴリ名", class: "mt-4 block" %>
+          <%= category_fields.text_field :name, class: "w-full border-gray-300 rounded px-3 py-2" %>
         <% end %>
       <% end %>
     </div>
 
     <div class="self-end">
-      <%= f.label :quantity, "数量", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.label :quantity, "数量" %>
       <%= f.number_field :quantity, class: "w-full border-gray-300 rounded px-3 py-2" %>
     </div>
+  </div>
+
+  <%= f.hidden_field :_destroy %>
+
+  <div class="text-right mt-4">
+    <button type="button"
+            data-action="recipet-items#remove"
+            class="text-red-500 hover:underline">
+      この商品を削除
+    </button>
   </div>
 </div>

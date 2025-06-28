@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_20_093626) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_28_135335) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_20_093626) do
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "expired_at"
     t.index ["item_id"], name: "index_recipet_items_on_item_id"
     t.index ["recipet_id"], name: "index_recipet_items_on_recipet_id"
   end
