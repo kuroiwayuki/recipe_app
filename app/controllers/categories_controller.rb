@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:edit, :update, :destroy]
+  before_action :set_category, only: [ :edit, :update, :destroy ]
 
   def index
     @categories = Category.all
@@ -9,7 +9,7 @@ class CategoriesController < ApplicationController
   def new
     @category = Category.new
   end
-  
+
 
   def create
     @category = Category.new(category_params)
@@ -28,7 +28,7 @@ class CategoriesController < ApplicationController
       end
     end
   end
-  
+
 
   def edit
     # index の一覧から編集する形式なので、通常は不要
