@@ -2,3 +2,8 @@ ja:
   time:
     formats:
       receipt: "%-m月%-d日"
+  date:
+    order:
+      - :year
+      - :month
+      - :day

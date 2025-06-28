@@ -1,7 +1,0 @@
-<%= turbo_stream.before "items" do %>
-  <%= render partial: "recipet_items/item", locals: { item: @recipet_item} %>
-<% end %>
-
-<%= turbo_stream.replace "new_item" do %>
-  <%= render "recipets/new_item_form", recipet: @recipet %>
-<% end %>

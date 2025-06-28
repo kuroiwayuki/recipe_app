@@ -8,9 +8,9 @@ class RecipetsController < ApplicationController
 
   def new
     @recipet = Recipet.new
-    ri = @recipet.recipet_items.build
-    item = ri.build_item
-    item.build_category
+    recipet_item = @recipet.recipet_items.build
+    item = recipet_item.build_item
+    category = item.build_category
   end
 
 
