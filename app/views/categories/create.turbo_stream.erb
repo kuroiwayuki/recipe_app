@@ -1,0 +1,4 @@
+<%= turbo_stream.remove "category_modal" %>
+<%= turbo_stream.append "categories_select" do %>
+  <option value="<%= @category.id %>"><%= @category.name %></option>
+<% end %>

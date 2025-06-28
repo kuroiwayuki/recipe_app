@@ -6,15 +6,29 @@ class CategoriesController < ApplicationController
     @category = params[:id] ? Category.find(params[:id]) : Category.new
   end
 
+  def new
+    @category = Category.new
+  end
+  
+
   def create
     @category = Category.new(category_params)
     if @category.save
-      redirect_to categories_path, notice: "カテゴリを作成しました"
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to categories_path, notice: "カテゴリを作成しました" }
+      end
     else
-      @categories = Category.all
-      render :index
+      respond_to do |format|
+        format.turbo_stream
+        format.html do
+          @categories = Category.all
+          render :index
+        end
+      end
     end
   end
+  
 
   def edit
     # index の一覧から編集する形式なので、通常は不要

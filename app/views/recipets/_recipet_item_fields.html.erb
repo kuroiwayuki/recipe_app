@@ -1,40 +1,39 @@
 <div class="recipet-item border p-4 rounded bg-gray-50 mb-4">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div>
+  <div class="flex flex-wrap items-end space-x-4">
+    <div class="flex-1 min-w-[180px]">
       <%= f.fields_for :item do |item_fields| %>
-        <%= item_fields.label :name, "商品名" %>
+        <%= item_fields.label :name, "商品名", class: "block mb-1" %>
         <%= item_fields.text_field :name, class: "w-full border-gray-300 rounded px-3 py-2" %>
+      <% end %>
+    </div>
 
-        <%= item_fields.label :category_id, "カテゴリ", class: "mt-4 block" %>
+    <div class="flex-1 min-w-[160px]">
+      <%= f.fields_for :item do |item_fields| %>
+        <%= item_fields.label :category_id, "カテゴリ", class: "block mb-1" %>
         <%= item_fields.select :category_id,
           options_from_collection_for_select(Category.all, :id, :name, item_fields.object.category_id),
           { include_blank: "カテゴリを選択" },
           class: "w-full border-gray-300 rounded px-3 py-2"
         %>
       <% end %>
-      <div class="text-right mt-4">
-    <button type="button"
-            data-action="category-modal#open"
-            class="text-red-500 hover:underline">
-      カテゴリを追加
-    </button>
-  </div>
     </div>
-    
 
-    <div class="self-end">
-      <%= f.label :quantity, "数量" %>
+    <div class="w-32">
+      <%= f.label :quantity, "数量", class: "block mb-1" %>
       <%= f.number_field :quantity, class: "w-full border-gray-300 rounded px-3 py-2" %>
     </div>
-  </div>
 
-  <%= f.hidden_field :_destroy %>
+    <div class="self-center">
+      <%= link_to 'カテゴリ追加', new_category_path, data: { turbo_frame: 'category_modal' },
+            class: "inline-block text-blue-600 hover:underline" %>
+    </div>
 
-  <div class="text-right mt-4">
-    <button type="button"
-            data-action="recipet-items#remove"
-            class="text-red-500 hover:underline">
-      この商品を削除
-    </button>
+    <div class="self-center">
+      <button type="button"
+              data-action="recipet-items#remove"
+              class="text-red-500 hover:underline">
+        削除
+      </button>
+    </div>
   </div>
 </div>
