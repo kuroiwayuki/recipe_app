@@ -1,0 +1,25 @@
+<div class="bg-white shadow rounded-lg p-6 mb-6">
+  <h2 class="text-2xl font-semibold mb-4">
+    <%= @category.persisted? ? "カテゴリを編集" : "新しいカテゴリを作成" %>
+  </h2>
+
+  <%= form_with model: @category, local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :name, "カテゴリ名", class: "block text-gray-700 mb-1 font-medium" %>
+      <%= f.text_field :name, class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+    </div>
+
+    <div class="mb-6">
+      <%= f.label :default_expiration, "デフォルト賞味期限(日)", class: "block text-gray-700 mb-1 font-medium" %>
+      <%= f.number_field :default_expiration, class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+    </div>
+
+    <div class="flex items-center space-x-4">
+      <%= f.submit @category.persisted? ? "更新する" : "作成する", class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow" %>
+
+      <% if @category.persisted? %>
+        <%= link_to "キャンセル", categories_path, class: "text-gray-600 hover:underline" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
